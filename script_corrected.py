@@ -102,7 +102,7 @@ class ExtendedHotellingEnv(gym.Env):
         self,
         n_positions: int = 11,
         initial_weights: Optional[np.ndarray] = None,
-        cost_scaling: float = 1.0,
+        cost_scaling: float = 0.1,
         reward_mean: float = 10.0,
         reward_std: float = 2.0,
         demand_volatility: float = 0.1,
@@ -152,6 +152,7 @@ class ExtendedHotellingEnv(gym.Env):
         """Transfer customers when agent moves"""
         if agent_pos == new_pos:
             return
+
         transferred_weight = self.weights[agent_pos] * loyalty_rate
         self.weights[agent_pos] -= transferred_weight
         self.weights[new_pos] += transferred_weight
@@ -205,9 +206,7 @@ class ExtendedHotellingEnv(gym.Env):
         elif jerry_moved and not ben_moved:
             ben_share = 1.0
 
-        reward_multiplier = max(
-            0.1, np.random.normal(self.reward_mean, self.reward_std)
-        )
+        reward_multiplier = max(1, np.random.normal(self.reward_mean, self.reward_std))
         return (
             ben_share * reward_multiplier - ben_cost,
             jerry_share * reward_multiplier - jerry_cost,
@@ -240,6 +239,7 @@ class ExtendedHotellingEnv(gym.Env):
         ben_reward, jerry_reward = self._calculate_rewards(
             ben_moved, jerry_moved, ben_loyalty_rate, jerry_loyalty_rate
         )
+
         self._apply_demand_shock()
         self.weight_history.append(self.weights.copy())
         self.position_history.append((self.ben_pos, self.jerry_pos))
@@ -277,7 +277,10 @@ class ExtendedHotellingEnv(gym.Env):
 
         self.prev_ben_pos = self.ben_pos
         self.prev_jerry_pos = self.jerry_pos
-        return np.array([self.ben_pos, self.jerry_pos], dtype=np.int32), {}
+
+        state = np.array([self.ben_pos, self.jerry_pos], dtype=np.int32), {}
+
+        return state
 
 
 # ============================================================================
@@ -291,12 +294,12 @@ class QLearningAgent:
         self.n_positions = n_positions
         self.n_actions = n_positions
         self.loyalty_strategy = loyalty_strategy
-        self.q_table = np.zeros((n_positions, n_positions, n_positions))
-        self.alpha = 0.2
+        self.q_table = np.zeros((self.n_positions, self.n_positions, self.n_actions))
+        self.alpha = 0.1
         self.gamma = 0.95
         self.epsilon = 1.0
-        self.epsilon_min = 0.05
-        self.epsilon_decay = 0.95
+        self.epsilon_min = 0.01
+        self.epsilon_decay = 0.995
 
     def get_loyalty_rate(self, time_at_position: int, customer_base: float) -> float:
         return self.loyalty_strategy.get_retention_rate(time_at_position, customer_base)
@@ -338,18 +341,18 @@ class HotellingVisualizer:
 
     def plot_training_summary(
         self,
-        ben_rewards,
-        jerry_rewards,
-        ben_positions,
-        jerry_positions,
-        movement_stats,
-        ben_relocs,
-        jerry_relocs,
-        period_length,
-        ben_cumulative,
-        jerry_cumulative,
-        ben_name,
-        jerry_name,
+        ben_rewards: list,
+        jerry_rewards: list,
+        ben_positions: list,
+        jerry_positions: list,
+        movement_stats: dict,
+        ben_relocs: list,
+        jerry_relocs: list,
+        period_length: int,
+        ben_cumulative: list = None,
+        jerry_cumulative: list = None,
+        ben_name: str = "Ben",
+        jerry_name: str = "Jerry",
     ):
         fig = plt.figure(figsize=(20, 16))
         gs = fig.add_gridspec(4, 3, hspace=0.4, wspace=0.3)
@@ -358,6 +361,7 @@ class HotellingVisualizer:
         ax1 = fig.add_subplot(gs[0, :])
         positions = np.linspace(0, self.beach_length, self.n_positions)
         final_weights = self.env.weights
+
         ax1.bar(
             positions,
             final_weights,
@@ -378,6 +382,7 @@ class HotellingVisualizer:
             else jerry_positions[-1]
         )
         max_weight = final_weights.max()
+
         ax1.plot(
             avg_ben,
             max_weight * 1.1,
