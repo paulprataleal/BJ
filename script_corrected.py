@@ -698,7 +698,7 @@ def main():
     print("=" * 70)
 
     env1, ben1, jerry1 = train_extended_hotelling(
-        episodes=50,
+        episodes=5000,
         steps_per_episode=20,
         n_positions=11,
         ben_loyalty_strategy=HighBrandLoyalty(base_rate=0.5, tenure_bonus=0.05),
