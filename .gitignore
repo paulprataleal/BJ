@@ -1,2 +1,4 @@
 venv
 .DS_Store
+readings
+__pycache__
