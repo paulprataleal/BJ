@@ -1,4 +1,4 @@
-#The Story of Ben & Jerry's Fight for the Biggest Segment of the Beach's Ice Cream Market
+#The Story of Ben & Jerry's Fight for the Biggest Segment of the Beach's Ice Cream Market a
 ## A Dynamic Hotelling Model with Relocation Costs and Consumer Loyalty
 
 ## Overview
