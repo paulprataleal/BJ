@@ -85,11 +85,6 @@ Reinforcement learning allows firms to:
 
 ---
 
-## Project Structure
-(To be updated once implementation is finalized)
-
----
-
 ## Output and Analysis
 The project analyzes:
 - Long-run firm locations
@@ -99,7 +94,6 @@ The project analyzes:
 - Effectiveness of different loyalty programs
 
 ---
-
 
 ## Authors
 - PIERRON, Marie
