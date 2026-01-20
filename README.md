@@ -1,4 +1,4 @@
-#The Story of Ben & Jerry's Fight for the Biggest Segment of the Beach's Ice Cream Market
+# The Story of Ben & Jerry's Fight for the Biggest Segment of the Beach's Ice Cream Market
 ## A Dynamic Hotelling Model with Relocation Costs and Consumer Loyalty
 
 ## Overview
@@ -47,10 +47,10 @@ This project investigates how this result changes in a dynamic learning environm
 - Firms interact repeatedly
 - Firms maximize discounted expected profits
 
-### 3. Stochastic Relocation
-- Firms can relocate to new positions probabilistically
-- Moves are not deterministic “left/right” steps
-- Relocation introduces uncertainty and risk
+### 3. Beam Relocation
+- Firms can relocate directly to any grid position in a single step
+- Movement is not restricted to incremental left/right moves
+- Relocation decisions are therefore risky and strategic
 
 ### 4. Relocation Costs
 - Moving is costly
@@ -85,13 +85,59 @@ Reinforcement learning allows firms to:
 
 ---
 
+## Project Structure
+```text
+BJ/
+├── README.md
+│
+├── Hotelling_Final/
+│   ├── hotelling_env.py          # Gymnasium environment (market dynamics, rewards, loyalty)
+│   ├── hotelling_agent.py        # Q-learning agent implementation
+│   ├── hotelling_train.py        # Training loop (fluid vs. rigid markets)
+│   ├── hotelling_test.py         # Evaluation / testing of trained agents
+│   ├── hotelling_viz.py          # Visualization utilities (positions, rewards, crowd density)
+│   │
+│   ├── fluid_market_ben.npy      # Trained Q-table (Ben, low relocation cost)
+│   ├── fluid_market_jerry.npy   # Trained Q-table (Jerry, low relocation cost)
+│   ├── rigid_market_ben.npy      # Trained Q-table (Ben, high relocation cost)
+│   ├── rigid_market_jerry.npy   # Trained Q-table (Jerry, high relocation cost)
+│   │
+│   └── script.py                 # Auxiliary execution / debugging script
+│
+├── hotelling_env.py              # Development version of environment (root)
+├── hotelling_agent.py            # Development version of agent
+├── hotelling_train.py            # Development training script
+├── hotelling_test.py             # Development testing script
+├── hotelling_viz.py              # Development visualization script
+│
+├── readings/                     # Academic references
+│   ├── Hotelling_1929_StabilityInCompetition.pdf
+│   ├── BiscaiaMota_2012_ModelsOfSpatialCompetition.pdf
+│   └── BalversSzerb_1996_LocationInHotelling.pdf
+│
+├── __pycache__/                  # Python cache files
+└── script_corrected.py           # Legacy / corrected experimental script
+```
+---
+
 ## Output and Analysis
 The project analyzes:
 - Long-run firm locations
 - Market share dynamics
-- Convergence vs. cycling behavior
+- Oscillation versus convergence behavior
 - Sensitivity to relocation costs
-- Effectiveness of different loyalty programs
+- Effectiveness of different loyalty structures
+
+Visual output is generated during the testing phase and used directly in the accompanying report.
+
+---
+
+## Status
+- Economic model: complete
+- Reinforcement learning environment: implemented
+- Training and testing pipeline: functional
+- Analysis: completed
+- Report: finalized
 
 ---
 
