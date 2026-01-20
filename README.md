@@ -100,14 +100,6 @@ The project analyzes:
 
 ---
 
-## Status
-- Economic model: defined
-- Extensions: specified
-- RL framework: in progress
-- Code: under active development
-- Report: being written in parallel
-
----
 
 ## Authors
 - PIERRON, Marie
